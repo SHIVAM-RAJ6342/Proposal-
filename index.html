@@ -242,6 +242,7 @@ function goTo(n) {
 }
 
 function goYes() {
+  completed = true;
   const cur = document.getElementById('slide-' + current);
   const yes = document.getElementById('slide-yes');
   yes.classList.add('active');
@@ -379,6 +380,30 @@ function launchConfetti() {
 }
 
 spawnHearts('hb0');
+
+// Warn before leaving
+let completed = false;
+
+window.addEventListener('beforeunload', function(e) {
+  if (!completed) {
+    e.preventDefault();
+    e.returnValue = '';
+    return '';
+  }
+});
+
+// Lock screen on mobile (prevent minimize)
+document.addEventListener('visibilitychange', function() {
+  if (document.hidden && !completed) {
+    document.title = '🥺 Please come back...';
+  } else {
+    document.title = 'For You 💌';
+  }
+});
+
+// Mark completed when YES is clicked
+const origGoYes = goYes;
+
 startMusic();
 </script>
 </body>
